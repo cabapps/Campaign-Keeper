@@ -8,16 +8,90 @@ using System.Threading.Tasks;
 
 namespace CampaignKeeperPcl.Services
 {
-    public abstract class CampaignKeeperService
+    public class CampaignKeeperService
     {
-        protected CampaignKeeperServiceSettings settings;
         public IList<string> Messages { get; set; }
 
-        public CampaignKeeperService(CampaignKeeperServiceSettings settings)
+        public CampaignKeeperService()
         {
-            this.settings = settings;
             Messages = new List<string>();
         }
+
+        #region Public Methods
+        public async Task<IList<TItem>> GetItems<TItem>(string apiPath) where TItem : Item, new()
+        {
+            using (var client = new HttpClient())
+            {
+                SetClient(client);
+                var response = await client.GetAsync(apiPath);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IList<TItem>>();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task<TItem> Get<TItem>(int id, string apiPath) where TItem : Item, new()
+        {
+            using (var client = new HttpClient())
+            {
+                SetClient(client);
+                var response = await client.GetAsync($"{apiPath}/{id.ToString()}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<TItem>();
+                }
+                else
+                {
+                    await ParseResponse(response);
+                    return null;
+                }
+            }
+        }
+
+        public async Task Post<TItem>(TItem item, string apiPath) where TItem : Item
+        {
+            using (var client = new HttpClient())
+            {
+                SetClient(client);              
+                var response = await client.PostAsJsonAsync(apiPath, item);
+                if (response.IsSuccessStatusCode)
+                {
+
+                }
+                else
+                {
+                    await ParseResponse(response);
+                }
+            }
+        }
+
+        public async Task Put<TItem>(TItem item, string apiPath) where TItem : Item
+        {
+            using (var client = new HttpClient())
+            {
+                SetClient(client);
+                var response = await client.PutAsJsonAsync($"{apiPath}/{item.Id}", item);
+                var code = response.StatusCode;
+                await ParseResponse(response);
+            }
+        }
+
+        public async Task Delete<TItem>(TItem item, string apiPath) where TItem : Item
+        {
+            using (var client = new HttpClient())
+            {
+                SetClient(client);
+                var response = await client.DeleteAsync($"{apiPath}/{item.Id}");
+                var code = response.StatusCode;
+            }
+        }
+        #endregion
+
 
         protected virtual async Task<bool> ParseResponse(HttpResponseMessage response)
         {
@@ -27,14 +101,16 @@ namespace CampaignKeeperPcl.Services
             }
             else if (!response.IsSuccessStatusCode)
             {
-                this.Messages.Add(response.ReasonPhrase);
+                Messages.Add(response.ReasonPhrase);
             }
             return response.IsSuccessStatusCode;
         }
 
         protected void SetClient(HttpClient client)
         {
-            client.BaseAddress = this.settings.ApiBaseUri;
+            client.BaseAddress = CampaignKeeperServiceSettings.ApiBaseUri;
         }
+
+
     }
 }

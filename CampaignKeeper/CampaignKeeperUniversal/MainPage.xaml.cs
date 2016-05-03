@@ -1,8 +1,11 @@
-﻿using System;
+﻿using CampaignKeeperPcl;
+using CampaignKeeperPcl.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -21,10 +24,105 @@ namespace CampaignKeeperUniversal
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
-    {
+    {   
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            try
+            {
+                base.OnNavigatedTo(e);
+                DataContext = App.ViewModel;
+                await LoadCampaignView();
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+            
+        }
+
+        private async Task LoadCampaignView()
+        {
+            await App.ViewModel.LoadCampaigns();
+            App.ViewModel.HideViews();
+            App.ViewModel.ShowCampignsView = true;
+            if (App.ViewModel.Campaigns.Count > 0)
+            {
+                CampaignCollection.View.MoveCurrentToFirst();
+                App.ViewModel.ShowCampaignDetail = true;
+            }
+        }
+
+        private async void AddCampaign_Click(object sender, RoutedEventArgs e)
+        {
+            App.ViewModel.AddNewCampaign();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CampaignCollection.View.CurrentItem is CampaignViewModel)
+            {
+                var campaign = CampaignCollection.View.CurrentItem as CampaignViewModel;
+                campaign.EnableEditMode(true);
+            }
+        }
+
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CampaignCollection.View.CurrentItem is CampaignViewModel)
+                {
+                    var campaign = CampaignCollection.View.CurrentItem as CampaignViewModel;
+                    await campaign.Save();
+                    campaign.EnableEditMode(false);
+                    await LoadCampaignView();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+        }
+
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button && CampaignCollection.View.CurrentItem is CampaignViewModel)
+                {
+                    var campaign = CampaignCollection.View.CurrentItem as CampaignViewModel;
+                    await campaign.Delete();
+                    await LoadCampaignView();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+        }
+
+        private void CampaignsButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.ViewModel.HideViews();
+            App.ViewModel.ShowCampignsView = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button && CampaignCollection.View.CurrentItem is CampaignViewModel)
+            {
+                var campaign = CampaignCollection.View.CurrentItem as CampaignViewModel;
+                campaign.EnableEditMode(false);
+            }
         }
     }
 }

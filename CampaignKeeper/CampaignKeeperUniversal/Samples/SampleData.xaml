@@ -1,0 +1,41 @@
+﻿<vm:ViewModel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CampaignKeeperUniversal"
+    xmlns:pcl="using:CampaignKeeperPcl"
+    xmlns:vm="using:CampaignKeeperPcl.ViewModels"
+     ShowCampaignDetail="True" ShowCampignsView="True" ShowLocationsView="False">
+    <vm:ViewModel.Campaigns>
+        <vm:CampaignViewModel>
+            <vm:CampaignViewModel.Campaign>
+                <pcl:Campaign Id="1" Name="The Greatest Campaign Ever 1">
+                    <pcl:Campaign.Description>
+                        This is a really long description with some paragraphs of data.\r\n\r\n                              
+I would like to start a 5e campaign on Saturday, May 7th. The campaign would be set in a period similar to the late 18th century - early 19th century (think revolutionary France or U.S.) of our world. The printing press has been invented, but gunpowder never took off since it's a world of magic. Instead we're beginning to see magic used for industrialization. In fact, most wizards don't bother learning spells like fireball (unless they're in the army). Instead they research spells that have mercantile, industrial, or academic applications. Clerics that specialize in smiting evil usually join the army. Those that specialize in healing tend to the needs of the sick and injured at home (of which there are many).\r\n\r\n                              
+It is also a world where nationalism is starting to take hold. A large minority group, the Ginians, in your county, the Republic Of Rhemas, has been treated as second class citizens for about 1200 years. Yet this group still retains much of its culture. The continent where this minority group fled from has just become accessible again for the first time in those 1200 years.\r\n\r\n                              
+Some factions among the Ginians want to go back to their "home" and establish a nation-state there. Others want to fight against the oppression in Rhemas--the only home they've known. Yet another faction wants to try to force change through peaceful means. And a final faction wants to maintain the status quo for fear that an unknown future may be worse than the barely tolerable present.\r\n\r\n                              
+As you can tell by the description above this campaign would deal with some weighty issues. As such, it would be a very serious campaign compared to ones I've run more recently. If you would be interested in playing please let me know.
+                    </pcl:Campaign.Description>
+                    <pcl:Campaign.Theme>
+                        What should people do in the face of oppression? Should they seek violent revolution? Should they try to find a place in a new land? Should they try to work their way through the system established by their oppressors? What if the oppression is light and there is no true villain?
+                    </pcl:Campaign.Theme>
+                </pcl:Campaign>
+            </vm:CampaignViewModel.Campaign>
+        </vm:CampaignViewModel>
+        <vm:CampaignViewModel>
+            <vm:CampaignViewModel.Campaign>
+                <pcl:Campaign Id="2" Name="The Greatest Campaign Ever 2"/>
+            </vm:CampaignViewModel.Campaign>
+        </vm:CampaignViewModel>
+        <vm:CampaignViewModel>
+            <vm:CampaignViewModel.Campaign>
+                <pcl:Campaign Id="3" Name="The Greatest Campaign Ever 3"/>
+            </vm:CampaignViewModel.Campaign>
+        </vm:CampaignViewModel>
+        <vm:CampaignViewModel>
+            <vm:CampaignViewModel.Campaign>
+                <pcl:Campaign Id="4" Name="The Greatest Campaign Ever 4"/>
+            </vm:CampaignViewModel.Campaign>
+        </vm:CampaignViewModel>    
+    </vm:ViewModel.Campaigns>
+</vm:ViewModel>

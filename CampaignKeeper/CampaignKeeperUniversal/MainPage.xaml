@@ -5,9 +5,73 @@
     xmlns:local="using:CampaignKeeperUniversal"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignData Samples/SampleData.xaml}">
+    <Page.Resources>
+        <CollectionViewSource x:Name="CampaignCollection" x:Key="CampaignCollection" Source="{Binding Campaigns}" />
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+    <Page.TopAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid Width="1000" DataContext="{Binding Source={StaticResource CampaignCollection}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="AppName" Grid.Column="0" TextWrapping="Wrap" Text="{StaticResource Title}" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                    <TextBlock x:Name="SelectedCampaignLabel" Grid.Column="1" TextWrapping="Wrap" Text="{Binding CurrentItem.Campaign.Name}" Margin="10,0,0,0" Style="{StaticResource TitleTextBlockStyle}"/>
+                </Grid>
+            </CommandBar.Content>
+            <AppBarButton x:Name="CampaignsButton" Icon="Library" Label="Campaigns" ToolTipService.ToolTip="Touch to get a list of your campaigns" Click="CampaignsButton_Click" />
+            <AppBarButton x:Name="LocationsButton" Icon="Map" Label="Locations" ToolTipService.ToolTip="Touch to get the locations in the current campaign"/>
+        </CommandBar>
+    </Page.TopAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="107*"/>
+        </Grid.RowDefinitions>
+        <SplitView DisplayMode="Inline" IsPaneOpen="True" Height="846" VerticalAlignment="Top" Grid.Row="1" Visibility="{Binding ShowCampignsView, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <SplitView.Pane>
+                <Grid>
+                    <StackPanel x:Name="CampaignStack" Grid.Row="1">
+                        <StackPanel Height="100" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button x:Name="AddCampaign" Content="Add Campaign" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,0,0" Click="AddCampaign_Click"/>
+                        </StackPanel>
+                        <ListView x:Name="CampaignList" ItemsSource="{Binding Source={StaticResource CampaignCollection}}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Campaign.Name}" Style="{StaticResource BodyTextBlockStyle}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Pane>
+            <Grid Visibility="{Binding ShowCampaignDetail, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                <StackPanel Margin="10,0,0,0" DataContext="{Binding Source={StaticResource CampaignCollection}}">
+                    <StackPanel Height="100" Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap" Text="Name" HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="CampaignNameText" Text="{Binding CurrentItem.Campaign.Name, Mode=TwoWay}" Width="250" TextWrapping="Wrap" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left" IsEnabled="{Binding CurrentItem.CanSave}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock TextWrapping="Wrap" Text="Theme" HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="ThemeText" Height="75" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding CurrentItem.Campaign.Theme, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,200,0" IsEnabled="{Binding CurrentItem.CanSave}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock TextWrapping="Wrap" Text="Description" HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="DescriptionText" Height="400" TextWrapping="Wrap" Text="{Binding CurrentItem.Campaign.Description, Mode=TwoWay}" VerticalAlignment="Center" Margin="10,0,200,0" AcceptsReturn="True" IsEnabled="{Binding CurrentItem.CanSave}" />
+                    </StackPanel>
+                    <StackPanel Height="100" Orientation="Horizontal">
+                        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" Visibility="{Binding CurrentItem.CanSave, Converter={StaticResource BooleanToVisibilityConverter}}" Click="CancelButton_Click"/>
+                        <Button x:Name="SaveButton" Content="Save"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" Visibility="{Binding CurrentItem.CanSave, Converter={StaticResource BooleanToVisibilityConverter}}" Click="SaveButton_Click"/>
+                        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" Visibility="{Binding CurrentItem.CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}" Click="DeleteButton_Click" />
+                        <Button x:Name="EditButton" Content="Edit" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" Visibility="{Binding CurrentItem.CanEdit, Converter={StaticResource BooleanToVisibilityConverter}}" Click="EditButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </SplitView>
     </Grid>
 </Page>

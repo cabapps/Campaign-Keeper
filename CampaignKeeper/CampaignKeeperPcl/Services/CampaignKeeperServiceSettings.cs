@@ -8,13 +8,10 @@ namespace CampaignKeeperPcl.Services
 {
     public class CampaignKeeperServiceSettings
     {
-        public Uri ApiBaseUri { get; private set; }
-        public string LocationsPath { get; set; }
+        public static Uri ApiBaseUri { get; set; }
+        public static string LocationsPath { get; set; }
+        public static string CampaignsPath { get; set; }
 
-        public CampaignKeeperServiceSettings()
-        {
-            ApiBaseUri = new Uri(@"http://localhost:26513/");
-            LocationsPath = @"api/Locations";
-        }
+        public CampaignKeeperServiceSettings() { }
     }
 }

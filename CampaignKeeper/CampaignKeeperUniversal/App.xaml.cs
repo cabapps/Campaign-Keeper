@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CampaignKeeperPcl;
+using CampaignKeeperPcl.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +24,8 @@ namespace CampaignKeeperUniversal
     /// </summary>
     sealed partial class App : Application
     {
+        public static ViewModel ViewModel { get; set; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -33,6 +37,14 @@ namespace CampaignKeeperUniversal
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            InitializeDataModelPaths();
+        }
+
+        private void InitializeDataModelPaths()
+        {
+            CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.ApiBaseUri = new Uri(@"http://localhost:26513/");
+            CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.LocationsPath = @"api/Locations";
+            CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.CampaignsPath = @"api/Campaigns";
         }
 
         /// <summary>
@@ -49,6 +61,11 @@ namespace CampaignKeeperUniversal
             }
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
+
+            if (ViewModel == null)
+            {
+                ViewModel = new ViewModel();
+            }
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
