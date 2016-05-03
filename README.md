@@ -1,5 +1,5 @@
 # Campaign-Keeper
-A system to help GMs track tabletop rpg campaigns. The system will have the following features 
+A system to help GMs track tabletop RPG campaigns. The system will have the following features 
 
 - A Universal Windows App for the DM to use to update his/her campaign.
 - A Web Api for the DM to push his/her campaign updates to the cloud.
