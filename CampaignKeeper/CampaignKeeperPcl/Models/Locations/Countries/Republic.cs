@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CampaignKeeperPcl.Locations.Countries
 {
-    public class Republic : ILegislature
+    public class Republic : Country, ILegislature
     {
         public IList<Legislature> Legislatures { get; set; }
     }

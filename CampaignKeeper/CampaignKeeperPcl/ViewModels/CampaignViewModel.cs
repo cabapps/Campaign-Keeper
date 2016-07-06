@@ -1,4 +1,5 @@
 ﻿using CampaignKeeperPcl.Services;
+using CampaignKeeperPcl.ViewModels.LocationViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,39 +10,42 @@ using System.Threading.Tasks;
 
 namespace CampaignKeeperPcl.ViewModels
 {
-    public class CampaignViewModel : BaseViewModel
+    public class CampaignViewModel : ItemViewModel
     {
 
-        #region Fields        
-        private bool canSave;
+        #region Fields                
         private Campaign campaign;
-        private bool canDelete;
-        private bool canEdit;
+        private LocationsViewModel locationsViewModel;
+        private bool showLocationsView;
         #endregion
 
-        #region Propoerties
-        public bool CanSave { get { return canSave; } set { canSave = value; OnPropertyChanged(); } }
-        public bool CanDelete { get { return canDelete; } set { canDelete = value; OnPropertyChanged(); } }
-        public bool CanEdit { get { return canEdit; } set { canEdit = value; OnPropertyChanged(); } }
+        #region Propoerties        
         public Campaign Campaign { get { return campaign; } set { campaign = value; OnPropertyChanged(); } }
+        public LocationsViewModel LocationsViewModel { get { return locationsViewModel; } set { locationsViewModel = value; OnPropertyChanged(); } }
+        public bool ShowLocationsView { get { return showLocationsView; } set { showLocationsView = value; OnPropertyChanged(); } }
         #endregion
 
-        public CampaignViewModel() : base() { }
+        public CampaignViewModel() : base()
+        {
+            Campaign = new Campaign();
+            LocationsViewModel = new LocationsViewModel();
+        }
 
         public CampaignViewModel(Campaign campaign)
         {
             Campaign = campaign;
-            EnableEditMode(campaign?.Id == 0);            
+            EnableEditMode(campaign?.Id == 0);
+            LocationsViewModel = new LocationsViewModel();
         }
 
-        public void EnableEditMode(bool enable)
+        public override void EnableEditMode(bool enable)
         {            
             CanDelete = enable && campaign.Id != 0;
             CanSave = enable;
             CanEdit = !enable;
         }
 
-        public async Task Save()
+        public override async Task Save()
         {
             if (Campaign.Id == 0)
             {
@@ -51,15 +55,28 @@ namespace CampaignKeeperPcl.ViewModels
             {
                 await Service.Put(Campaign, CampaignKeeperServiceSettings.CampaignsPath);
             }            
-            Messages.Add("Campaign Saved");
+            Message = "Campaign Saved";
         }
 
-        public async Task Delete()
+        public override async Task Delete()
         {
             if (Campaign.Id != 0)
             {
                 await Service.Delete(Campaign, CampaignKeeperServiceSettings.CampaignsPath);
             }
+        }
+
+        public async Task LoadLocations()
+        {
+            await HideViews();
+            LocationsViewModel = new LocationsViewModel(Campaign);
+            ShowLocationsView = true;
+        }
+
+        public async Task HideViews()
+        {
+            ShowLocationsView = false;
+            await LocationsViewModel.HideLocationViews();
         }
     }
 }

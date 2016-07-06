@@ -14,7 +14,7 @@ namespace CampaignKeeperUniversal
         {
             if (value is Boolean)
             {
-                return ((bool)value) ? Visibility.Visible : Visibility.Collapsed;
+                return ((bool)value) == true ? Visibility.Visible : Visibility.Collapsed;
             }
             else
             {

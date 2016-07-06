@@ -4,9 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CampaignKeeperUniversal"
     RequestedTheme="Light">
-    <Application.Resources>
-        <x:String x:Key="Title">Campaign Keeper</x:String>
-    </Application.Resources>
-
-
+    <Application.Resources>        
+        <ResourceDictionary>
+            <x:String x:Key="Title">Campaign Keeper</x:String>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>        
+    </Application.Resources>   
 </Application>

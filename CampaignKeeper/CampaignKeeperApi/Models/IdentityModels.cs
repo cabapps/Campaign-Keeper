@@ -6,6 +6,9 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using CampaignKeeperPcl;
 using CampaignKeeperPcl.Organizations;
+using CampaignKeeperPcl.Models.Cultures;
+using CampaignKeeperPcl.Locations;
+using CampaignKeeperPcl.Locations.Countries;
 
 namespace CampaignKeeperApi.Models
 {
@@ -44,7 +47,15 @@ namespace CampaignKeeperApi.Models
         public DbSet<Character> Characters { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Continent> Continents { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Kingdom> Kingdoms { get; set; }
+        public DbSet<Republic> Repubics { get; set; }
+        public DbSet<LegislativeMonarchy> LegislativeMonarchies { get; set; }
+        public DbSet<ConstitutionalRepublic> ConstitutionalRepublics { get; set; }
         public DbSet<Money> Moneys { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<EthnicGroup> EthnicGroups { get; set; }
+        public DbSet<Culture> Cultures { get; set; }
     }
 }

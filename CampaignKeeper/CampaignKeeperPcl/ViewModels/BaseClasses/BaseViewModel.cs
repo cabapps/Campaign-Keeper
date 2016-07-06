@@ -18,17 +18,17 @@ namespace CampaignKeeperPcl.ViewModels
         #endregion
 
         #region Fields        
-        private ObservableCollection<string> messages;
+        private string messages;
         #endregion
 
         #region Properties
-        public ObservableCollection<string> Messages { get { return messages; } set { messages = value; OnPropertyChanged(nameof(Messages)); } }
+        public string Message { get { return messages; } set { messages = value; OnPropertyChanged(nameof(Message)); } }
         protected CampaignKeeperService Service { get; set; }
         #endregion
 
         public BaseViewModel()
         {
-            messages = new ObservableCollection<string>();
+            messages = string.Empty;
             Service = new CampaignKeeperService();
         }
 

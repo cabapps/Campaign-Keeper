@@ -9,6 +9,8 @@
     d:DataContext="{d:DesignData Samples/SampleData.xaml}">
     <Page.Resources>
         <CollectionViewSource x:Name="CampaignCollection" x:Key="CampaignCollection" Source="{Binding Campaigns}" />
+        <CollectionViewSource x:Name="CountriesCollection" x:Key="CountriesCollection" Source="{Binding CurrentItem.LocationsViewModel.Countries, Source={StaticResource CampaignCollection}}" />
+        <CollectionViewSource x:Name="ContinentCollection" x:Key="ContinentCollection" Source="{Binding CurrentItem.LocationsViewModel.Continents, Source={StaticResource CampaignCollection}}"/>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
     <Page.TopAppBar>
@@ -24,7 +26,7 @@
                 </Grid>
             </CommandBar.Content>
             <AppBarButton x:Name="CampaignsButton" Icon="Library" Label="Campaigns" ToolTipService.ToolTip="Touch to get a list of your campaigns" Click="CampaignsButton_Click" />
-            <AppBarButton x:Name="LocationsButton" Icon="Map" Label="Locations" ToolTipService.ToolTip="Touch to get the locations in the current campaign"/>
+            <AppBarButton x:Name="LocationsButton" Icon="Map" Label="Locations" ToolTipService.ToolTip="Touch to get the locations in the current campaign" Click="LocationsButton_Click"/>
         </CommandBar>
     </Page.TopAppBar>
 
@@ -33,7 +35,49 @@
             <RowDefinition Height="13*"/>
             <RowDefinition Height="107*"/>
         </Grid.RowDefinitions>
-        <SplitView DisplayMode="Inline" IsPaneOpen="True" Height="846" VerticalAlignment="Top" Grid.Row="1" Visibility="{Binding ShowCampignsView, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,0,5">
+            <TextBlock Text="{Binding Message}"/>
+        </StackPanel>
+        <SplitView x:Name="LocationsView" DataContext="{Binding Source={StaticResource CampaignCollection}}" HorizontalAlignment="Left" DisplayMode="Inline" IsPaneOpen="True" Height="846" VerticalAlignment="Top" Visibility="{Binding CurrentItem.ShowLocationsView, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" d:IsHidden="True" >
+            <SplitView.Pane>
+                <Grid DataContext="{Binding CurrentItem.LocationsViewModel}">
+                    <StackPanel Height="100" VerticalAlignment="Top">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="ContinentsButton" Content="Continents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,0" Checked="ContinentsButton_Checked" IsChecked="{Binding ShowContinents, Mode=TwoWay}" />
+                                <ToggleButton x:Name="CountriesButton" Content="Countries" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,0" Checked="CountriesButton_Checked" IsChecked="{Binding ShowCountries, Mode=TwoWay}" />
+                                <ToggleButton x:Name="RegionsButton" Content="Regions" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,0" Checked="RegionsButton_Checked" IsChecked="{Binding ShowRegions, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                <Button x:Name="AddLocation" Content="Add Location" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,0,0" Click="AddLocation_Click"/>
+                            </StackPanel>
+                            <ListView x:Name="ContinentsList" ItemsSource="{Binding Source={StaticResource ContinentCollection}}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Continent.Name}" />
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Pane>
+            <Grid Visibility="{Binding CurrentItem.LocationsViewModel.ShowLocationDetail, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel DataContext="{Binding Source={StaticResource ContinentCollection}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Name" Style="{StaticResource SubtitleTextBlockStyle}" Margin="10,0,0,0" />
+                        <TextBox Text="{Binding CurrentItem.Continent.Name}" Style="{StaticResource ItemDetailTextBoxStyle}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                        <Button x:Name="ContinentSaveButton" Content="Save" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0" Click="SaveButton_Click"/>
+                        <Button x:Name="ContinentCancelButton" Content="Cancel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0"/>
+                        <Button x:Name="ContinentDeleteButton" Content="Delete" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0"/>
+                        <Button x:Name="ContinentEditButton" Content="Edit" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </SplitView>
+        <SplitView x:Name="CampaignsView" DisplayMode="Inline" IsPaneOpen="True" Height="846" VerticalAlignment="Top" Grid.Row="1" Visibility="{Binding ShowCampaignsView, Converter={StaticResource BooleanToVisibilityConverter}}">
             <SplitView.Pane>
                 <Grid>
                     <StackPanel x:Name="CampaignStack" Grid.Row="1">

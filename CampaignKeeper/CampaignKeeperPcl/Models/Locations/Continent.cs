@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CampaignKeeperPcl.Models.Cultures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace CampaignKeeperPcl.Locations
     {
         public List<Country> Countries { get; set; }
         public List<Region> UnsettledRegions { get; set; }
+        public List<EthnicGroup> EthnicGroups { get; set; }
     }
 }

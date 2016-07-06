@@ -39,6 +39,8 @@
     <Compile Include="Models\Adventure.cs" />
     <Compile Include="Models\BaseClasses\Character.cs" />
     <Compile Include="Models\BaseClasses\Item.cs" />
+    <Compile Include="Models\Cultures\Culture.cs" />
+    <Compile Include="Models\Cultures\EthnicGroup.cs" />
     <Compile Include="Models\Locations\Countries\ConstitutionalMonarchy.cs" />
     <Compile Include="Models\Locations\Countries\ConstitutionalRepublic.cs" />
     <Compile Include="Models\Locations\Countries\LegislativeMonarchy.cs" />
@@ -106,6 +108,12 @@
     <Compile Include="Services\CampaignKeeperServiceSettings.cs" />
     <Compile Include="ViewModels\BaseClasses\BaseViewModel.cs" />
     <Compile Include="ViewModels\CampaignViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModels\CountryViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModels\LocationsViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModels\LocationViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModels\ContinentViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModels\RegionViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

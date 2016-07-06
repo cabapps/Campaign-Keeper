@@ -1,4 +1,6 @@
-﻿using CampaignKeeperPcl.Services;
+﻿using CampaignKeeperPcl.Locations;
+using CampaignKeeperPcl.Services;
+using CampaignKeeperPcl.ViewModels.LocationViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,17 +14,17 @@ namespace CampaignKeeperPcl.ViewModels
     public class ViewModel : BaseViewModel
     {
         #region Fields
-        private ObservableCollection<CampaignViewModel> campaigns;
+        private ObservableCollection<CampaignViewModel> campaigns;        
+        
         private bool showCampaignDetail;
-        private bool showCampaignsView;
-        private bool showLocationsView;
+        private bool showCampaignsView;        
         #endregion
 
         #region Properties
-        public ObservableCollection<CampaignViewModel> Campaigns { get { return campaigns; } set { campaigns = value; OnPropertyChanged(); } }
+        
+        public ObservableCollection<CampaignViewModel> Campaigns { get { return campaigns; } set { campaigns = value; OnPropertyChanged(); } }        
         public bool ShowCampaignDetail { get { return showCampaignDetail; } set { showCampaignDetail = value; OnPropertyChanged(); } }
-        public bool ShowCampignsView { get { return showCampaignsView; } set { showCampaignsView = value; OnPropertyChanged(); } }
-        public bool ShowLocationsView { get { return showLocationsView; } set { showLocationsView = value; OnPropertyChanged(); } }
+        public bool ShowCampaignsView { get { return showCampaignsView; } set { showCampaignsView = value; OnPropertyChanged(); } }
         #endregion
 
         public ViewModel() : base()
@@ -37,7 +39,7 @@ namespace CampaignKeeperPcl.ViewModels
             {
                 foreach (var message in Service.Messages)
                 {
-                    Messages.Add(message);
+                    Message += $"{message} ";
                 }
                 return;
             }
@@ -48,17 +50,20 @@ namespace CampaignKeeperPcl.ViewModels
             }
         }
 
-        public void AddNewCampaign()
+        public async Task AddNewCampaign()
         {
             Campaigns.Add(new CampaignViewModel(new Campaign { Name = "New Campaign" }));
             Campaigns.OrderBy(c => c.Campaign.Id);
+            ShowCampaignDetail = true;
         }
         
         
-        public void HideViews()
+        public async Task HideViews()
         {
-            ShowCampignsView = false;
-            ShowLocationsView = false;
-        }        
+            ShowCampaignsView = false;
+            Campaigns.Select(async c  => { await c.HideViews(); return c; }).ToList();
+        }
+        
+                
     }
 }

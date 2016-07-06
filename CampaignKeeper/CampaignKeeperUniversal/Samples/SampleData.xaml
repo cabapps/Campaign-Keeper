@@ -4,7 +4,9 @@
     xmlns:local="using:CampaignKeeperUniversal"
     xmlns:pcl="using:CampaignKeeperPcl"
     xmlns:vm="using:CampaignKeeperPcl.ViewModels"
-     ShowCampaignDetail="True" ShowCampignsView="True" ShowLocationsView="False">
+    xmlns:lvm="using:CampaignKeeperPcl.ViewModels.LocationViewModels"
+    xmlns:lm="using:CampaignKeeperPcl.Locations"
+    xmlns:cm="using:CampaignKeeperPcl.Locations.Countries">
     <vm:ViewModel.Campaigns>
         <vm:CampaignViewModel>
             <vm:CampaignViewModel.Campaign>
@@ -21,6 +23,21 @@ As you can tell by the description above this campaign would deal with some weig
                     </pcl:Campaign.Theme>
                 </pcl:Campaign>
             </vm:CampaignViewModel.Campaign>
+            <vm:CampaignViewModel.LocationsViewModel>
+                <lvm:LocationsViewModel>
+                    <lvm:LocationsViewModel.Continents>
+                        <lvm:ContinentViewModel>
+                            <lvm:ContinentViewModel.Continent>
+                                <lm:Continent Id="1" Name="North America">
+                                    <lm:Continent.Countries>
+                                        <cm:ConstitutionalMonarchy Id="1" Name="United States" History="The United States became a republic in 1795. They have a president that rules and a bicameral legislature. They have a constitution. They have a Supreme Court."/>
+                                    </lm:Continent.Countries>
+                                </lm:Continent>
+                            </lvm:ContinentViewModel.Continent>
+                        </lvm:ContinentViewModel>
+                    </lvm:LocationsViewModel.Continents>
+                </lvm:LocationsViewModel>
+            </vm:CampaignViewModel.LocationsViewModel>
         </vm:CampaignViewModel>
         <vm:CampaignViewModel>
             <vm:CampaignViewModel.Campaign>
@@ -38,4 +55,7 @@ As you can tell by the description above this campaign would deal with some weig
             </vm:CampaignViewModel.Campaign>
         </vm:CampaignViewModel>    
     </vm:ViewModel.Campaigns>
+    <vm:ViewModel.Message>
+        Error loading data.
+    </vm:ViewModel.Message>
 </vm:ViewModel>

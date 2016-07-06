@@ -18,7 +18,7 @@ namespace CampaignKeeperPcl.Services
         }
 
         #region Public Methods
-        public async Task<IList<TItem>> GetItems<TItem>(string apiPath) where TItem : Item, new()
+        public async Task<IList<TItem>> GetItems<TItem>(string apiPath) where TItem : Item
         {
             using (var client = new HttpClient())
             {
@@ -35,7 +35,7 @@ namespace CampaignKeeperPcl.Services
             }
         }
 
-        public async Task<TItem> Get<TItem>(int id, string apiPath) where TItem : Item, new()
+        public async Task<TItem> Get<TItem>(int id, string apiPath) where TItem : Item
         {
             using (var client = new HttpClient())
             {

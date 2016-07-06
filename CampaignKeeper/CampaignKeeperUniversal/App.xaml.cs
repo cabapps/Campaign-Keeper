@@ -42,6 +42,7 @@ namespace CampaignKeeperUniversal
 
         private void InitializeDataModelPaths()
         {
+            //CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.ApiBaseUri = new Uri(@"http://campaignkeeperapi20160428113106.azurewebsites.net/");
             CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.ApiBaseUri = new Uri(@"http://localhost:26513/");
             CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.LocationsPath = @"api/Locations";
             CampaignKeeperPcl.Services.CampaignKeeperServiceSettings.CampaignsPath = @"api/Campaigns";
